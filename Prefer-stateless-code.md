@@ -7,7 +7,7 @@ The following are the coding patterns that lead to stateful code, which should b
 public class A 
 {
    private string _b;
-   public void Fee(string b){ _b = b}
+   public void Fee(string b){ _b = b;}
 }
 //To write
 public class A 
