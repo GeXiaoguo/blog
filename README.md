@@ -1,1 +1,1 @@
-# CodingGuidlines
+# blog
