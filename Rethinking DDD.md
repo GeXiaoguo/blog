@@ -1,7 +1,7 @@
 # Evolving Perspectives in Domain-Driven Design: From Nouns to Verbs
 
 ## Introduction
-Domain-Driven Design (DDD) has long been a staple in complex software development, offering a structured approach to dealing with complexities in business requirements. Traditionally, DDD has employed a noun-based approach, focusing on defining aggregates and bounded contexts as key structures. In this noun-based model, the focus is on entities (the 'nouns'), with these entities owning the behaviors (the 'verbs' or methods) that operate within them. However, as our understanding of business use cases evolves, so must our approach to modeling them. Shifting towards a more dynamic, verb-based approach, we start to prioritize business cases themselves. In this verb-based model, business cases are seen as functions, and these functions own the stateful worlds they operate in, rather than being confined by predefined structures. This blog post explores the journey from the traditional noun-based DDD to this more adaptive verb-based approach, highlighting the evolving nature of business cases and the limitations of conventional DDD methods.
+Domain-Driven Design (DDD) has long been a staple tool box in modeling complex business logic, offering a structured approach to dealing with the complexities of business requirements. Traditionally, DDD has employed a noun-based approach, focusing on defining aggregates as key structures which owns the behaviors (the 'verbs'). This blog post explores problems this approache creates and proposes transitioning to a more adaptive verb-based modeling approach. 
 
 ## The Evolving Nature of Business Use Cases
 Business use cases often start off poorly understood and inevitably evolve over time. This evolution is driven by two factors. 
@@ -11,14 +11,14 @@ First, it is inherent in the nature of business itself: as a business develops a
 Second, these use cases are frequently initiated with limited understanding by both the business and technical teams. This initial gap in understanding means that as the use cases are iterated upon by both teams, more knowledge is acquired, making adjustments and refinements inevitable. 
 
 ### Traditional DDD: A Constraint on Evolution
-In traditional Domain-Driven Design (DDD), the model is built on the assumption of non-overlapping aggregates and bounded contexts. This design choice, while initially offering clarity, can lead to issues as business requirements evolve. When new requirements necessitate the inclusion of states already captured by other aggregates or bounded contexts, traditional DDD discourages direct state sharing. Instead, it recommends raising domain events to be processed asynchronously by the relevant aggregates/bounded contexts. This approach, while ensuring separation of concerns, can inadvertently create an asynchronous software process to model what is essentially a synchronous business process, overlooking the significant complexity an asynchronous software process adds.
+In traditional Domain-Driven Design (DDD), the model is built on the assumption of non-overlapping aggregates and bounded contexts. This design choice, while initially offering clarity, can lead to issues as business requirements evolve. When new requirements necessitate the inclusion of states that are already captured by other aggregates or bounded contexts, traditional DDD discourages direct state sharing. Instead, it recommends raising domain events to be processed asynchronously by the relevant aggregates/bounded contexts. This approach, while ensuring separation of concerns, can inadvertently create an asynchronous software process for what is essentially a synchronous business process, overlooking the significant complexity the asynchronous software process adds.
 
-Furthermore, traditional DDD mandates that aggregates own multiple methods (business cases). As these business cases evolve, often independently, the associated stateful worlds they operate in need to adapt as well. This can lead to aggregates growing unwieldy and oversized, or to states being forcibly externalized from the aggregate. The conventional solution of updating these states is, again, with domain events. These events are a byproduct of artificial aggregate boundaries, rather than from domain event storming sessions with the business teams, which is where domain events are meant to be defined.
+Furthermore, traditional DDD mandates that aggregate to be the container of both states and behaviors(business cases). As these business cases evolve, often independently, the associated states they share need to evolve accordingly. This can lead to either growing the aggregates unwieldy, or to forcibly externalize the states. This is a choice between bloated aggregates or bloated asynchronous domain events. Neither of which is ideal. The end result is often that DDD becomes the source of complexity rather than the colution to complexity.
 
 ## Shifting to a Verb-Based Approach
-Recognizing these limitations, a shift towards a verb-based approach in DDD is necessary. This approach views each business case as an independent entity that fully owns its operational context. By focusing on behaviors (verbs) rather than entities (nouns), the verb-based model allows for a more organic evolution of business cases, free from the artificial constraints of traditional DDD.
+Recognizing these problems, a shift towards a verb-based approach in DDD becomes essential. This approach views the business cases as an independent entities that fully owns their operational context(states). This allows the states to be evolved freely together with the business use cases, free from the artificial constraints from the traditional DDD.
 
-The distinction between these approaches come down to the simple difference below.
+The distinction between these the noun-based and verb-based approaches come down to the simple difference shown below.
 
 Traditional noun-based DDD might look like:
 ```csharp
@@ -39,13 +39,12 @@ static MyStatefulWorld2 MyBusinessCase2(MyStatefulWorld2 states);
 ```
 In this verb-based approach:
 
-Each business case is represented as a function, emphasizing the action or behavior.
-The state (MyStatefulWorld1, MyStatefulWorld2) is passed to the function, and the function operates on this state.
+Each business case is represented as a function. The states (e.g. MyStatefulWorld1, MyStatefulWorld2) are the input and output type owned by the functions. And the functions are independent to each other.
 
-There's a clear separation between the state and the behavior, and each business case is independent, possibly operating on different versions of the state.
+There's a clear separation between the the functions the states, as oppose to them being encapsulated together inside aggregates..
 
 ## Advantages of the Verb-Based Approach
-A verb-based approach in Domain-Driven Design (DDD) presents several compelling advantages, particularly in its flexibility and responsiveness to the evolving nature of the business requirements. 
+A verb-based approach in Domain-Driven Design (DDD) presents several advantages, particularly in its flexibility and responsiveness to the evolving nature of the business requirements. 
 
 Firstly, it allows business cases to evolve independently, treating each as a unique function with its own stateful world. This independence means that changes or developments in one area of the business do not necessitate forced adjustments in others, fostering a more agile and adaptive environment.
 
