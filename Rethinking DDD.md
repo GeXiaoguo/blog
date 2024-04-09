@@ -29,6 +29,7 @@ class MyAggregateRoot {
     void MyBusinessCase1();
     void MyBusinessCase2();
 }
+```
 
 In the traditional approach:
 
